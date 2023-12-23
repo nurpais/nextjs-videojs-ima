@@ -17,6 +17,9 @@ const videoJsOptions = {
   controls: true,
   responsive: true,
   fluid: true,
+  controlBar: {
+    pictureInPictureToggle: false,
+  },
   sources: [
     {
       src: '/test.mp4',
@@ -34,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="max-w-screen-md mx-auto px-6 py-20">
-      <h1 className="text-5xl font-semibold text-center">Video.js IMA Example</h1>
+      <h1 className="text-5xl font-semibold text-center text-neutral-800">Video.js IMA Example</h1>
 
       <div className="mt-10">
         <VideoPlayer options={videoJsOptions} ima={ima} onReady={handlePlayerReady} />
