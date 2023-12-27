@@ -5,6 +5,7 @@ import 'videojs-contrib-ads';
 import 'videojs-ima';
 
 import 'video.js/dist/video-js.css';
+import '@/app/video-skin.css';
 
 const VideoPlayer = (props) => {
   const [isFixed, setIsFixed] = useState(false);
@@ -12,6 +13,11 @@ const VideoPlayer = (props) => {
   const playerRef = useRef(null);
   const videoWrapperRef = useRef(null);
   const { options, onReady, ima } = props;
+
+  const [showCloseBtn, setShowCloseBtn] = useState(false);
+  const [showSkipBtn, setShowSkipBtn] = useState(false);
+
+  const [showVideo, setShowVideo] = useState(true);
 
   React.useEffect(() => {
     // Make sure Video.js player is only initialized once
@@ -83,8 +89,51 @@ const VideoPlayer = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowCloseBtn(true);
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowSkipBtn(true);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (!showVideo) return null;
+
   return (
-    <div ref={videoWrapperRef}>
+    <div ref={videoWrapperRef} className="relative">
+      <div className="absolute z-[9999] top-1 right-1 flex gap-1">
+        {showSkipBtn && (
+          <button
+            className="bg-[#00b2ff] text-white text-xs font-medium py-1 px-2"
+            onClick={() => {
+              setShowSkipBtn((prev) => !prev);
+              setShowVideo(false);
+            }}
+          >
+            Skip
+          </button>
+        )}
+        {showCloseBtn && (
+          <button
+            className="bg-[#00b2ff] text-white text-xs font-medium py-0.5 px-3"
+            onClick={() => {
+              setShowCloseBtn((prev) => !prev);
+              setShowVideo(false);
+            }}
+          >
+            Close
+          </button>
+        )}
+      </div>
+
       <div className={isFixed ? 'fixed bottom-4 right-4 h-56 aspect-video' : ''}>
         <div data-vjs-player>
           <div ref={videoRef} />

@@ -33,6 +33,12 @@ export default function Home() {
 
   const handlePlayerReady = (player) => {
     playerRef.current = player;
+
+    player.on('ads-loader', function (response) {
+      var adsManager = response.adsManager;
+      console.log(response);
+      // Your code in response to the `ads-manager` event.
+    });
   };
 
   return (
