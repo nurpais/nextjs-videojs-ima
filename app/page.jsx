@@ -34,11 +34,28 @@ export default function Home() {
   const handlePlayerReady = (player) => {
     playerRef.current = player;
 
-    player.on('ads-loader', function (response) {
-      var adsManager = response.adsManager;
-      console.log(response);
-      // Your code in response to the `ads-manager` event.
+    player.on('adsready', function () {
+      var events = [
+        google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
+        google.ima.AdEvent.Type.CLICK,
+        google.ima.AdEvent.Type.COMPLETE,
+        google.ima.AdEvent.Type.FIRST_QUARTILE,
+        google.ima.AdEvent.Type.LOADED,
+        google.ima.AdEvent.Type.MIDPOINT,
+        google.ima.AdEvent.Type.PAUSED,
+        google.ima.AdEvent.Type.RESUMED,
+        google.ima.AdEvent.Type.STARTED,
+        google.ima.AdEvent.Type.THIRD_QUARTILE,
+      ];
+
+      for (var index = 0; index < events.length; index++) {
+        player.ima.addEventListener(events[index], onAdEvent.bind(this));
+      }
     });
+
+    function onAdEvent(event) {
+      console.log(event);
+    }
   };
 
   return (
